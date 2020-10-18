@@ -18,6 +18,7 @@ winHeight = 600
 win = pygame.display.set_mode((winWidth, winHeight))
 pygame.display.set_caption("First Game")
 
+
 walkRight = [pygame.image.load('grafikaDoGry/wr0.png'), pygame.image.load('grafikaDoGry/wr1.png'),
              pygame.image.load('grafikaDoGry/wr2.png'),
              pygame.image.load('grafikaDoGry/wr3.png'), pygame.image.load('grafikaDoGry/wr2.png'),

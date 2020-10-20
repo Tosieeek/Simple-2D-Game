@@ -11,14 +11,3 @@ class Bullet:
             self.x -= self.vec
         elif self.site =="right":
             self.x += self.vec
-
-
-
-
-
-
-
-
-
-
-

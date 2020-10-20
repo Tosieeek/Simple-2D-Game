@@ -11,8 +11,8 @@ class Map:
         # adding ground as a platform
         self.listXfrom.append(0)
         self.listXto.append(winWidth)
-        self.listYfrom.append(winHeight-15)
-        self.listYto.append(winHeight-15)
+        self.listYfrom.append(winHeight - 15)
+        self.listYto.append(winHeight - 15)
 
         file = open(df)
         for line in file:

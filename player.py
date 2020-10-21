@@ -1,13 +1,12 @@
 import pygame
 from bullet import Bullet
 
-
 class Player:
-    def __init__(self, x, y):
+    def __init__(self, x, y, leftButton, rightButton, upButton, downButton, shotButton, flyButton):
         self.width = 35
         self.height = 60
         self.x = x
-        self.y = y - self.height
+        self.y = y
         self.isJump = True
         self.left = False
         self.right = False
@@ -18,6 +17,12 @@ class Player:
         self.platformBelowY = 0
         self.jumpCount = 8
         self.timer = 0
+        self.leftButton = leftButton
+        self.rightButton = rightButton
+        self.upButton = upButton
+        self.downButton = downButton
+        self.shotButton = shotButton
+        self.flyButton = flyButton
 
     def walkCount_check(self):
         if self.walkCount >= 7:
@@ -40,7 +45,7 @@ class Player:
         if self.timer > 0:
             self.timer -= 1
 
-        if keys[pygame.K_LEFT] and self.x > 0:
+        if keys[self.leftButton] and self.x > 0:
             self.x -= self.vel
             self.left = True
             self.right = False
@@ -50,13 +55,13 @@ class Player:
                     self.isJump = True
                     self.jumpCount = 0
 
-            if keys[pygame.K_z] and self.timer == 0:
+            if keys[self.shotButton] and self.timer == 0:
                 self.timer = 10
                 # zrobić tak zeby bullet miał swojego playera który go rzucił
                 bullet = Bullet(self.x + self.width / 2, self.y, "left")
                 bullets.append(bullet)
         # zastanowić się żeby nie przyjmowac w metodzie winWidth
-        elif keys[pygame.K_RIGHT] and self.x < winWidth - self.width:
+        elif keys[self.rightButton] and self.x < winWidth - self.width:
             self.x += self.vel
             self.left = False
             self.right = True
@@ -66,7 +71,7 @@ class Player:
                     self.isJump = True
                     self.jumpCount = 0
 
-            if keys[pygame.K_z] and self.timer == 0:
+            if keys[self.shotButton] and self.timer == 0:
                 self.timer = 10
                 bullet = Bullet(self.x + self.width / 2, self.y, "right")
                 bullets.append(bullet)
@@ -76,18 +81,18 @@ class Player:
             self.right = False
             self.walkCount = 0
 
-        if keys[pygame.K_x]:
+        if keys[self.flyButton]:
             self.y -= 10
             self.isJump = True
             self.jumpCount = 0
 
-        if keys[pygame.K_DOWN] and self.onPlatform == True and self.y < map.listYto[0] - self.height - map.size:
+        if keys[self.downButton] and self.onPlatform == True and self.y < map.listYto[0] - self.height - map.size:
             self.y = map.listYto[self.actualPlatform] - self.height + 1
             self.isJump = True
             self.jumpCount = -2
 
         if not self.isJump:
-            if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
+            if keys[self.upButton]:
                 self.isJump = True
                 self.walkCount = 0
 

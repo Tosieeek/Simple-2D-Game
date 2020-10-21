@@ -24,7 +24,7 @@ startY = -70
 players = []
 
 
-def redrawGameWindow(win,winWidth):
+def redrawGameWindow(win, winWidth):
 
     win.blit(bg, (0, 0))
 
@@ -73,15 +73,15 @@ def redrawGameWindow(win,winWidth):
     pygame.display.update()
 
 def game(win,winWidth,winHeight):
+
     map = Map(mapSource, 4, (220, 47, 10), winWidth, winHeight)
 
-    run = True
-    player1 = Player(random.randrange(0, winWidth, 1), startY)
-    player2 = Player(random.randrange(0, winWidth, 1), startY)
+    player1 = Player(random.randrange(0, winWidth, 1), startY, pygame.K_LEFT,pygame.K_RIGHT,pygame.K_UP,pygame.K_DOWN,pygame.K_o,pygame.K_p)
+    player2 = Player(random.randrange(0, winWidth, 1), startY,pygame.K_a,pygame.K_d,pygame.K_w,pygame.K_s,pygame.K_v,pygame.K_b)
     players.append(player1)
     players.append(player2)
 
-
+    run = True
     while run:
 
         clock.tick(21)

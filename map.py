@@ -22,7 +22,3 @@ class Map:
             self.listXto.append(int(tab[2]))
             self.listYto.append(int(tab[3]))
         file.close()
-
-
-
-

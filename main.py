@@ -1,18 +1,5 @@
 import pygame
 import localGame
-from bullet import Bullet
-from map import Map
-import random
-from player import Player
-
-#
-# font = pygame.font.SysFont("comicsansms", 72)
-# txUP = font.render('/|\\', True, (0, 128, 0))
-# txRI = font.render('->', True, (0, 128, 0))
-# txLF = font.render('<-', True, (0, 128, 0))
-# txDW = font.render('\\|/', True, (0, 128, 0))
-
-
 
 pygame.init()
 winWidth = 800

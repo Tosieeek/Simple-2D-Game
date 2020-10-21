@@ -22,11 +22,18 @@ bullets = []
 clock = pygame.time.Clock()
 startY = -70
 players = []
+ticker = 0
+
 
 
 def redrawGameWindow(win, winWidth):
+    global ticker, hitTicker
 
     win.blit(bg, (0, 0))
+
+    ticker += 1
+    if ticker > 21:
+        ticker = 0
 
 #   !!! NIE USUWAĆ, TO DO TESTÓW!!!
 
@@ -42,14 +49,21 @@ def redrawGameWindow(win, winWidth):
     #     pygame.draw.circle(win, map.color,(700,100),30,5)
 
     if len(bullets) != 0:
+
         for b in bullets:
             b.move()
+            if b.hitbox_check(players):
+                bullets.remove(b)
+                del b
+                continue
             if b.state:
                 win.blit(bullet2, (int(b.x), int(b.y)))
-                b.state = False
+                if ticker % 3 == 0:
+                    b.state = False
             else:
                 win.blit(bullet1, (int(b.x), int(b.y)))
-                b.state = True
+                if ticker % 3 == 0:
+                    b.state = True
 
             if b.x < 0 or b.x > winWidth:
                 bullets.remove(b)
@@ -58,6 +72,13 @@ def redrawGameWindow(win, winWidth):
 
     for player in players:
         player.walkCount_check()
+
+        if player.hit and ticker % 3 == 0:
+            player.hitTicker -= 1
+            continue
+        elif player.hitTicker < 0:
+            player.hitTicker = 5
+            player.hit = False
 
         if player.left:
             win.blit(walkLeft[player.walkCount], (player.x, player.y))
@@ -69,6 +90,8 @@ def redrawGameWindow(win, winWidth):
         else:
             win.blit(stand, (player.x, player.y))
             player.walkCount = 0
+
+
 
     pygame.display.update()
 

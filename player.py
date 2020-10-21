@@ -23,6 +23,14 @@ class Player:
         self.downButton = downButton
         self.shotButton = shotButton
         self.flyButton = flyButton
+        self.lives = 3
+        self.hit = False
+        self.hitTicker = 5
+
+    def hited(self):
+        self.hit = True
+        self.lives -= 1
+
 
     def walkCount_check(self):
         if self.walkCount >= 7:
@@ -31,7 +39,7 @@ class Player:
     def belowIsPlatform(self, shift, map):
         for i in range(len(map.listXto)):
             if map.listXfrom[i] <= self.x + 2 * self.width / 3 and self.x + self.width / 3 <= map.listXto[i]:
-                if self.y + self.height >= map.listYfrom[i] >= self.y + self.height - shift:
+                if self.y + self.height >= map.listYfrom[i] - map.size >= self.y + self.height - shift:
                     self.platformBelowY = map.listYfrom[i] - self.height - map.size
                     self.actualPlatform = i
                     self.onPlatform = True
@@ -58,7 +66,7 @@ class Player:
             if keys[self.shotButton] and self.timer == 0:
                 self.timer = 10
                 # zrobić tak zeby bullet miał swojego playera który go rzucił
-                bullet = Bullet(self.x + self.width / 2, self.y, "left")
+                bullet = Bullet(self.x + self.width / 2, self.y, "left", self)
                 bullets.append(bullet)
         # zastanowić się żeby nie przyjmowac w metodzie winWidth
         elif keys[self.rightButton] and self.x < winWidth - self.width:
@@ -73,7 +81,7 @@ class Player:
 
             if keys[self.shotButton] and self.timer == 0:
                 self.timer = 10
-                bullet = Bullet(self.x + self.width / 2, self.y, "right")
+                bullet = Bullet(self.x + self.width / 2, self.y, "right", self)
                 bullets.append(bullet)
 
         else:

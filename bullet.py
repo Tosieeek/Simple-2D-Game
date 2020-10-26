@@ -17,7 +17,7 @@ class Bullet:
     def hitbox_check(self, players):
         for player in players:
             if self.owner != player:
-                if player.x + player.width > self.x + self.size/2 > player.x and player.y < self.y + self.size / 2 < player.y + player.height:
+                if player.x + player.width > self.x + self.size/2 > player.x and player.y < self.y + self.size / 2 < player.y + player.height and player.hit==False:
                     player.hited()
                     return True
 

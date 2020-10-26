@@ -1,11 +1,16 @@
+import random
+
 import pygame
 from bullet import Bullet
 
 class Player:
-    def __init__(self, x, y, leftButton, rightButton, upButton, downButton, shotButton, flyButton):
+    def __init__(self, winWidth, y, leftButton, rightButton, upButton, downButton, shotButton, flyButton):
+
+        self.winWidth = winWidth
+
         self.width = 35
         self.height = 60
-        self.x = x
+        self.x = random.randrange(0, self.winWidth-self.width, 1)
         self.y = y
         self.isJump = True
         self.left = False
@@ -24,12 +29,27 @@ class Player:
         self.shotButton = shotButton
         self.flyButton = flyButton
         self.lives = 3
+
+        # just for playeAttributes class
+        self.constLives = 3
+
+        self.gotShoot = 0
         self.hit = False
         self.hitTicker = 5
 
+
     def hited(self):
         self.hit = True
-        self.lives -= 1
+        self.gotShoot += 1
+        if self.gotShoot > 2:
+            self.lives -= 1
+            self.gotShoot = 0
+            self.y = -70
+            self.x = random.randrange(0, self.winWidth-self.width, 1)
+            self.hit = False
+            self.isJump = True
+
+
 
 
     def walkCount_check(self):

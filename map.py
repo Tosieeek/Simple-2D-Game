@@ -1,4 +1,3 @@
-
 class Map:
     def __init__(self, df, size, color, winWidth, winHeight):
         self.size = size

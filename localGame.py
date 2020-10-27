@@ -3,7 +3,7 @@ import pygame
 from map import Map
 from player import Player
 from playerAttributes import PlayerAttributes
-
+from jetpack import Jetpack
 walkRight = [pygame.image.load('grafikaDoGry/wr0.png'), pygame.image.load('grafikaDoGry/wr1.png'),
              pygame.image.load('grafikaDoGry/wr2.png'),
              pygame.image.load('grafikaDoGry/wr3.png'), pygame.image.load('grafikaDoGry/wr2.png'),
@@ -20,6 +20,8 @@ heart = pygame.image.load('grafikaDoGry/heart.png')
 heatLeft = pygame.image.load('grafikaDoGry/heart-left.png')
 heatRight = pygame.image.load('grafikaDoGry/heart-right.png')
 
+
+jetpack = pygame.transform.scale(pygame.image.load('grafikaDoGry/jetpack/jetpack.png'), (23, 44))
 bullet1 = pygame.image.load('grafikaDoGry/bullet.png')
 bullet2 = pygame.image.load('grafikaDoGry/bullet2.png')
 mapSource = 'grafikaDoGry/map2.txt'
@@ -28,11 +30,12 @@ clock = pygame.time.Clock()
 startY = -70
 players = []
 ticker = 0
+globalTime = 0
+jetpacks = []
 
 
-
-def redrawGameWindow(win, winWidth, attributes):
-    global ticker, hitTicker
+def redrawGameWindow(win, winWidth, attributes, map):
+    global ticker, hitTicker, globalTime
 
     win.blit(bg, (0, 0))
 
@@ -42,7 +45,7 @@ def redrawGameWindow(win, winWidth, attributes):
     ticker += 1
     if ticker > 21:
         ticker = 0
-
+    globalTime += 1
 #   !!! NIE USUWAĆ, TO DO TESTÓW!!!
 
     # pygame.draw.rect(win,(0,0,0),(x,y,width,height),3)
@@ -79,6 +82,15 @@ def redrawGameWindow(win, winWidth, attributes):
         for b in bulletsToRemove:
             bullets.remove(b)
 
+    if globalTime % 100 == 0:
+        jet = Jetpack(map)
+        jetpacks.append(jet)
+
+    for jpc in jetpacks:
+        win.blit(jetpack, (jpc.x, jpc.y))
+        jpc.surge()
+
+
     for player in players:
         player.walkCount_check()
 
@@ -108,18 +120,18 @@ def game(win,winWidth,winHeight):
 
     map = Map(mapSource, 4, (220, 47, 10), winWidth, winHeight)
 
-    player1 = Player(winWidth, startY, pygame.K_LEFT,pygame.K_RIGHT,pygame.K_UP,pygame.K_DOWN,pygame.K_o,pygame.K_p)
-    player2 = Player(winWidth, startY,pygame.K_a,pygame.K_d,pygame.K_w,pygame.K_s,pygame.K_v,pygame.K_b)
+    player1 = Player(winWidth, startY, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_o, pygame.K_p)
+    player2 = Player(winWidth, startY, pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s, pygame.K_v, pygame.K_b)
     players.append(player1)
     players.append(player2)
     pa1 = PlayerAttributes(stand, heart, player1, heatLeft, heatRight)
     pa2 = PlayerAttributes(stand, heart, player2, heatLeft, heatRight)
-    attributes = pa1,pa2
+    attributes = pa1, pa2
 
     run = True
     while run:
 
-        clock.tick(24)
+        clock.tick(21)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -127,7 +139,8 @@ def game(win,winWidth,winHeight):
         for player in players:
 
             player.find_coordinates(map, bullets, winWidth)
+
             if player.lives == 0:
                 run = False
 
-        redrawGameWindow(win, winWidth, attributes)
+        redrawGameWindow(win, winWidth, attributes, map)

@@ -17,6 +17,9 @@ walkLeft = [pygame.image.load('grafikaDoGry/wl0.png'), pygame.image.load('grafik
 bg = pygame.image.load('grafikaDoGry/background.png')
 stand = pygame.image.load('grafikaDoGry/stand2.png')
 heart = pygame.image.load('grafikaDoGry/heart.png')
+heatLeft = pygame.image.load('grafikaDoGry/heart-left.png')
+heatRight = pygame.image.load('grafikaDoGry/heart-right.png')
+
 bullet1 = pygame.image.load('grafikaDoGry/bullet.png')
 bullet2 = pygame.image.load('grafikaDoGry/bullet2.png')
 mapSource = 'grafikaDoGry/map2.txt'
@@ -109,8 +112,8 @@ def game(win,winWidth,winHeight):
     player2 = Player(winWidth, startY,pygame.K_a,pygame.K_d,pygame.K_w,pygame.K_s,pygame.K_v,pygame.K_b)
     players.append(player1)
     players.append(player2)
-    pa1 = PlayerAttributes(stand,heart,player1)
-    pa2 = PlayerAttributes(stand,heart,player2)
+    pa1 = PlayerAttributes(stand, heart, player1, heatLeft, heatRight)
+    pa2 = PlayerAttributes(stand, heart, player2, heatLeft, heatRight)
     attributes = pa1,pa2
 
     run = True

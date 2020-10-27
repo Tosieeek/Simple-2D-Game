@@ -41,7 +41,7 @@ class Player:
     def hited(self):
         self.hit = True
         self.gotShoot += 1
-        if self.gotShoot > 2:
+        if self.gotShoot > 1:
             self.lives -= 1
             self.gotShoot = 0
             self.y = -70

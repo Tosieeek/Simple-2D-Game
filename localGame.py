@@ -123,5 +123,7 @@ def game(win,winWidth,winHeight):
         for player in players:
 
             player.find_coordinates(map, bullets, winWidth)
+            if player.lives == 0:
+                run = False
 
         redrawGameWindow(win, winWidth, attributes)

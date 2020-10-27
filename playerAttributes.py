@@ -6,7 +6,7 @@ class PlayerAttributes:
 
         self.heartWidth = 43
         self.heartHeight = 36
-        self.padding = 4
+        self.padding = 0
         self.stand = pygame.transform.scale(stand, (int(player.width/1.3), int(player.height/1.5)))
         self.heart = pygame.transform.scale(heart, (int(self.heartWidth/1.2), int(self.heartHeight/1.2)))
         self.player = player

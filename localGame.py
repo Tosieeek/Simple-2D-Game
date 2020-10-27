@@ -44,6 +44,8 @@ heartLeft = pygame.image.load('grafikaDoGry/heart-left.png')
 heartRight = pygame.image.load('grafikaDoGry/heart-right.png')
 
 jetpackGraphics = pygame.transform.scale(pygame.image.load('grafikaDoGry/jetpack/jetpack.png'), (23, 44))
+jetpackBar = pygame.image.load('grafikaDoGry/jetpack/jetpackBar.png')
+
 
 bulletsGraphics = [pygame.image.load('grafikaDoGry/bullet.png'), pygame.image.load('grafikaDoGry/bullet2.png')]
 mapSource = 'grafikaDoGry/map2.txt'
@@ -132,8 +134,8 @@ def redrawGameWindow(win, winWidth, attributes, map):
 
 
         if player.hasJetpack:
-            if player.jetpackTimer > 0:
-                player.jetpackTimer -= 1
+            if player.jetpackTimer < 90:
+                player.jetpackTimer += 1
             else:
                 player.hasJetpack = False
                 player.isFlying = False
@@ -190,8 +192,8 @@ def game(win, winWidth, winHeight):
     player2 = Player(winWidth, startY, pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s, pygame.K_v, pygame.K_b)
     players.append(player1)
     players.append(player2)
-    pa1 = PlayerAttributes(stand, heart, player1, heartLeft, heartRight)
-    pa2 = PlayerAttributes(stand, heart, player2, heartLeft, heartRight)
+    pa1 = PlayerAttributes(stand, heart, player1, heartLeft, heartRight, jetpackGraphics, jetpackBar)
+    pa2 = PlayerAttributes(stand, heart, player2, heartLeft, heartRight, jetpackGraphics, jetpackBar)
     attributes = pa1, pa2
 
     run = True

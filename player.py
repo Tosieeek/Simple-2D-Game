@@ -30,7 +30,7 @@ class Player:
         self.flyButton = flyButton
         self.lives = 3
         self.hasJetpack = False
-        self.jetpackTimer = 0
+        self.jetpackTimer = 90
         self.isFlying = False
 
         # just for playerAttributes class
@@ -42,7 +42,7 @@ class Player:
 
     def getJetpack(self):
         self.hasJetpack = True
-        self.jetpackTimer = 90
+        self.jetpackTimer = 0
 
     def hited(self):
         self.hit = True

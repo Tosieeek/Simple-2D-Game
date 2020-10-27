@@ -4,6 +4,7 @@ from map import Map
 from player import Player
 from playerAttributes import PlayerAttributes
 from jetpack import Jetpack
+
 walkRight = [pygame.image.load('grafikaDoGry/wr0.png'), pygame.image.load('grafikaDoGry/wr1.png'),
              pygame.image.load('grafikaDoGry/wr2.png'),
              pygame.image.load('grafikaDoGry/wr3.png'), pygame.image.load('grafikaDoGry/wr2.png'),
@@ -20,8 +21,7 @@ heart = pygame.image.load('grafikaDoGry/heart.png')
 heartLeft = pygame.image.load('grafikaDoGry/heart-left.png')
 heartRight = pygame.image.load('grafikaDoGry/heart-right.png')
 
-
-jetpack = pygame.transform.scale(pygame.image.load('grafikaDoGry/jetpack/jetpack.png'), (23, 44))
+jetpackGraphics = pygame.transform.scale(pygame.image.load('grafikaDoGry/jetpack/jetpack.png'), (23, 44))
 bulletsGraphics = [pygame.image.load('grafikaDoGry/bullet.png'), pygame.image.load('grafikaDoGry/bullet2.png')]
 mapSource = 'grafikaDoGry/map2.txt'
 bullets = []
@@ -33,6 +33,7 @@ jetpackTimer = 0
 jetpacks = []
 frequency = 21
 
+
 def redrawGameWindow(win, winWidth, attributes, map):
     global ticker, hitTicker, jetpackTimer
 
@@ -42,9 +43,9 @@ def redrawGameWindow(win, winWidth, attributes, map):
     attributes[1].draw_attributes(win, winWidth, "right")
 
     ticker += 1
-    ticker %= frequency+1
+    ticker %= frequency + 1
     jetpackTimer += 1
-#   !!! NIE USUWAĆ, TO DO TESTÓW!!!
+    #   !!! NIE USUWAĆ, TO DO TESTÓW!!!
 
     # pygame.draw.rect(win,(0,0,0),(x,y,width,height),3)
     # for i in range(len(map.listXto)):
@@ -61,7 +62,7 @@ def redrawGameWindow(win, winWidth, attributes, map):
         bulletsToRemove = []
         for bullet in bullets:
             bullet.move()
-            if bullet.hitbox_check(players):
+            if bullet.hitboxCheck(players):
                 bullets.remove(bullet)
                 del bullet
                 continue
@@ -85,13 +86,33 @@ def redrawGameWindow(win, winWidth, attributes, map):
         jetpacks.append(jet)
         jetpackTimer = 0
 
-    for jpc in jetpacks:
-        win.blit(jetpack, (jpc.x, jpc.y))
-        jpc.surge()
+    if len(jetpacks) != 0:
+        jetpacksToRemove = []
+        for jetpack in jetpacks:
+            win.blit(jetpackGraphics, (jetpack.x, jetpack.y))
+            jetpack.surge()
 
+            if jetpack.existenceTimer > 0:
+                jetpack.existenceTimer -= 1
+            else:
+                jetpacksToRemove.append(jetpack)
+                del jetpack
+
+            if jetpack.hitboxCheck(players):
+                jetpacksToRemove.append(jetpack)
+                del jetpack
+
+        for jetpack in jetpacksToRemove:
+            jetpacks.remove(jetpack)
 
     for player in players:
         player.walkCount %= 7
+
+        if player.hasJetpack:
+            if player.jetpackTimer > 0:
+                player.jetpackTimer -= 1
+            else:
+                player.hasJetpack = False
 
         if player.hit and ticker % 3 == 0:
             player.hitTicker -= 1
@@ -111,15 +132,14 @@ def redrawGameWindow(win, winWidth, attributes, map):
             win.blit(stand, (player.x, player.y))
             player.walkCount = 0
 
-
-
     pygame.display.update()
 
-def game(win,winWidth,winHeight):
 
+def game(win, winWidth, winHeight):
     map = Map(mapSource, 4, (220, 47, 10), winWidth, winHeight)
 
-    player1 = Player(winWidth, startY, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_o, pygame.K_p)
+    player1 = Player(winWidth, startY, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_o,
+                     pygame.K_p)
     player2 = Player(winWidth, startY, pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s, pygame.K_v, pygame.K_b)
     players.append(player1)
     players.append(player2)

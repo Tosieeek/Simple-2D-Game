@@ -29,6 +29,8 @@ class Player:
         self.shotButton = shotButton
         self.flyButton = flyButton
         self.lives = 3
+        self.hasJetpack = False
+        self.jetpackTimer = 0
 
         # just for playerAttributes class
 
@@ -36,6 +38,10 @@ class Player:
         self.hit = False
         self.hitTicker = 5
 
+
+    def getJetpack(self):
+        self.hasJetpack = True
+        self.jetpackTimer = 90
 
     def hited(self):
         self.hit = True
@@ -102,12 +108,12 @@ class Player:
             self.right = False
             self.walkCount = 0
 
-        if keys[self.flyButton]:
+        if keys[self.flyButton] and self.hasJetpack:
             self.y -= 10
             self.isJump = True
             self.jumpCount = 0
 
-        if keys[self.downButton] and self.onPlatform == True and self.y < map.listYto[0] - self.height - map.size:
+        if keys[self.downButton] and self.onPlatform and self.y < map.listYto[0] - self.height - map.size:
             self.y = map.listYto[self.actualPlatform] - self.height + 1
             self.isJump = True
             self.jumpCount = -2

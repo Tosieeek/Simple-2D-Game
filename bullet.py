@@ -14,7 +14,7 @@ class Bullet:
         elif self.site =="right":
             self.x += self.velocity
 
-    def hitbox_check(self, players):
+    def hitboxCheck(self, players):
         for player in players:
             if self.owner != player:
                 if player.x + player.width > self.x + self.size/2 > player.x and player.y < self.y + self.size / 2 < player.y + player.height and player.hit==False:

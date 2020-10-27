@@ -1,5 +1,6 @@
 import random
 
+
 class Jetpack:
     def __init__(self, map):
         self.height = 29
@@ -10,6 +11,9 @@ class Jetpack:
         self.y = self.startedY
         self.direction = "up"
         self.movingTimer = 12
+        self.width = 15
+        self.height = 29
+        self.existenceTimer = 230
 
     def surge(self):
         if self.direction == "up" and self.movingTimer > 0:
@@ -26,3 +30,9 @@ class Jetpack:
                 self.direction = "up"
                 self.movingTimer = 10
 
+    def hitboxCheck(self, players):
+        for player in players:
+            if player.x + player.width > self.x + self.width / 2 > player.x and player.y < self.y + self.height / 2 < player.y + player.height:
+                player.getJetpack()
+                return True
+        return False

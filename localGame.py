@@ -15,6 +15,26 @@ walkLeft = [pygame.image.load('grafikaDoGry/wl0.png'), pygame.image.load('grafik
             pygame.image.load('grafikaDoGry/wl3.png'), pygame.image.load('grafikaDoGry/wl2.png'),
             pygame.image.load('grafikaDoGry/wl1.png'),
             pygame.image.load('grafikaDoGry/wl0.png')]
+
+walkLeftWithJetpack = [pygame.image.load('grafikaDoGry/jetpack/wl0jetpack.png'),
+                       pygame.image.load('grafikaDoGry/jetpack/wl1jetpack.png'),
+                       pygame.image.load('grafikaDoGry/jetpack/wl2jetpack.png'),
+                       pygame.image.load('grafikaDoGry/jetpack/wl3jetpack.png'),
+                       pygame.image.load('grafikaDoGry/jetpack/wl2jetpack.png'),
+                       pygame.image.load('grafikaDoGry/jetpack/wl1jetpack.png'),
+                       pygame.image.load('grafikaDoGry/jetpack/wl0jetpack.png')]
+
+walkRightWithJetpack = [pygame.image.load('grafikaDoGry/jetpack/wr0jetpack.png'),
+                        pygame.image.load('grafikaDoGry/jetpack/wr1jetpack.png'),
+                        pygame.image.load('grafikaDoGry/jetpack/wr2jetpack.png'),
+                        pygame.image.load('grafikaDoGry/jetpack/wr3jetpack.png'),
+                        pygame.image.load('grafikaDoGry/jetpack/wr2jetpack.png'),
+                        pygame.image.load('grafikaDoGry/jetpack/wr1jetpack.png'),
+                        pygame.image.load('grafikaDoGry/jetpack/wr0jetpack.png')]
+
+flyLeft = pygame.image.load('grafikaDoGry/jetpack/wl1jetpackFire.png')
+flyRight = pygame.image.load('grafikaDoGry/jetpack/wr1jetpackFire.png')
+
 background = pygame.image.load('grafikaDoGry/background.png')
 stand = pygame.image.load('grafikaDoGry/stand2.png')
 heart = pygame.image.load('grafikaDoGry/heart.png')
@@ -96,14 +116,13 @@ def redrawGameWindow(win, winWidth, attributes, map):
                 jetpack.existenceTimer -= 1
             else:
                 jetpacksToRemove.append(jetpack)
-                del jetpack
 
             if jetpack.hitboxCheck(players):
                 jetpacksToRemove.append(jetpack)
-                del jetpack
 
         for jetpack in jetpacksToRemove:
             jetpacks.remove(jetpack)
+            del jetpack
 
     for player in players:
         player.walkCount %= 7

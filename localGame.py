@@ -10,6 +10,7 @@ walkRight = [pygame.image.load('grafikaDoGry/wr0.png'), pygame.image.load('grafi
              pygame.image.load('grafikaDoGry/wr3.png'), pygame.image.load('grafikaDoGry/wr2.png'),
              pygame.image.load('grafikaDoGry/wr1.png'),
              pygame.image.load('grafikaDoGry/wr0.png')]
+
 walkLeft = [pygame.image.load('grafikaDoGry/wl0.png'), pygame.image.load('grafikaDoGry/wl1.png'),
             pygame.image.load('grafikaDoGry/wl2.png'),
             pygame.image.load('grafikaDoGry/wl3.png'), pygame.image.load('grafikaDoGry/wl2.png'),
@@ -34,7 +35,8 @@ walkRightWithJetpack = [pygame.image.load('grafikaDoGry/jetpack/wr0jetpack.png')
 
 flyLeft = pygame.image.load('grafikaDoGry/jetpack/wl1jetpackFire.png')
 flyRight = pygame.image.load('grafikaDoGry/jetpack/wr1jetpackFire.png')
-
+standJetpackFire = pygame.image.load('grafikaDoGry/jetpack/standjetpackFire.png')
+standJetpack = pygame.image.load('grafikaDoGry/jetpack/standjetpack.png')
 background = pygame.image.load('grafikaDoGry/background.png')
 stand = pygame.image.load('grafikaDoGry/stand2.png')
 heart = pygame.image.load('grafikaDoGry/heart.png')
@@ -42,6 +44,7 @@ heartLeft = pygame.image.load('grafikaDoGry/heart-left.png')
 heartRight = pygame.image.load('grafikaDoGry/heart-right.png')
 
 jetpackGraphics = pygame.transform.scale(pygame.image.load('grafikaDoGry/jetpack/jetpack.png'), (23, 44))
+
 bulletsGraphics = [pygame.image.load('grafikaDoGry/bullet.png'), pygame.image.load('grafikaDoGry/bullet2.png')]
 mapSource = 'grafikaDoGry/map2.txt'
 bullets = []
@@ -127,11 +130,13 @@ def redrawGameWindow(win, winWidth, attributes, map):
     for player in players:
         player.walkCount %= 7
 
+
         if player.hasJetpack:
             if player.jetpackTimer > 0:
                 player.jetpackTimer -= 1
             else:
                 player.hasJetpack = False
+                player.isFlying = False
 
         if player.hit and ticker % 3 == 0:
             player.hitTicker -= 1
@@ -139,15 +144,38 @@ def redrawGameWindow(win, winWidth, attributes, map):
         elif player.hitTicker < 0:
             player.hitTicker = 5
             player.hit = False
-
-        if player.left:
+# wznosimy sie jetpackiem
+        if player.isFlying and player.left:
+            win.blit(flyLeft, (player.x, player.y))
+        elif player.isFlying and player.right:
+            win.blit(flyRight, (player.x, player.y))
+        elif player.isFlying:
+            win.blit(standJetpackFire, (player.x, player.y))
+# spadamy z jetpackiem
+        elif not player.isFlying and player.hasJetpack and player.isJump and player.left:
+            win.blit(walkLeftWithJetpack[1], (player.x, player.y))
+        elif not player.isFlying and player.hasJetpack and player.isJump and player.right:
+            win.blit(walkRightWithJetpack[1], (player.x, player.y))
+        elif not player.isFlying and player.hasJetpack and player.isJump:
+            win.blit(standJetpack, (player.x, player.y))
+# chodzenie z jetpackiem
+        elif player.left and player.hasJetpack:
+            win.blit(walkLeftWithJetpack[player.walkCount], (player.x, player.y))
+            player.walkCount += 1
+        elif player.right and player.hasJetpack:
+            win.blit(walkRightWithJetpack[player.walkCount], (player.x, player.y))
+            player.walkCount += 1
+        elif player.hasJetpack:
+            win.blit(standJetpack, (player.x, player.y))
+            player.walkCount = 0
+# chodzenie bez jetpacka
+        elif player.left and not player.isFlying:
             win.blit(walkLeft[player.walkCount], (player.x, player.y))
             player.walkCount += 1
-        elif player.right:
+        elif player.right and not player.isFlying:
             win.blit(walkRight[player.walkCount], (player.x, player.y))
             player.walkCount += 1
-
-        else:
+        elif not player.isFlying:
             win.blit(stand, (player.x, player.y))
             player.walkCount = 0
 

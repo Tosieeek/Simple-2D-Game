@@ -31,6 +31,7 @@ class Player:
         self.lives = 3
         self.hasJetpack = False
         self.jetpackTimer = 0
+        self.isFlying = False
 
         # just for playerAttributes class
 
@@ -87,6 +88,7 @@ class Player:
                 self.timer = 10
                 bullet = Bullet(self.x + self.width / 2, self.y, "left", self)
                 bullets.append(bullet)
+
         # zastanowić się żeby nie przyjmowac w metodzie winWidth
         elif keys[self.rightButton] and self.x < winWidth - self.width:
             self.x += self.velocity
@@ -112,6 +114,9 @@ class Player:
             self.y -= 10
             self.isJump = True
             self.jumpCount = 0
+            self.isFlying = True
+        else:
+            self.isFlying = False
 
         if keys[self.downButton] and self.onPlatform and self.y < map.listYto[0] - self.height - map.size:
             self.y = map.listYto[self.actualPlatform] - self.height + 1

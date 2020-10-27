@@ -11,8 +11,6 @@ class Jetpack:
         self.y = self.startedY
         self.direction = "up"
         self.movingTimer = 12
-        self.width = 15
-        self.height = 29
         self.existenceTimer = 230
 
     def surge(self):

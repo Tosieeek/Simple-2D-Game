@@ -15,11 +15,11 @@ class Player:
         self.isJump = True
         self.left = False
         self.right = False
-        self.vel = 6
+        self.velocity = 6
         self.walkCount = 0
         self.actualPlatform = 0
         self.onPlatform = True
-        self.platformBelowY = 0
+        self.YPlatformBelowPlayer = 0
         self.jumpCount = 8
         self.timer = 0
         self.leftButton = leftButton
@@ -30,8 +30,7 @@ class Player:
         self.flyButton = flyButton
         self.lives = 3
 
-        # just for playeAttributes class
-        self.constLives = 3
+        # just for playerAttributes class
 
         self.gotShoot = 0
         self.hit = False
@@ -50,21 +49,16 @@ class Player:
             self.isJump = True
 
 
-
-
-    def walkCount_check(self):
-        if self.walkCount >= 7:
-            self.walkCount = 0
-
     def belowIsPlatform(self, shift, map):
         for i in range(len(map.listXto)):
             if map.listXfrom[i] <= self.x + 2 * self.width / 3 and self.x + self.width / 3 <= map.listXto[i]:
                 if self.y + self.height >= map.listYfrom[i] - map.size >= self.y + self.height - shift:
-                    self.platformBelowY = map.listYfrom[i] - self.height - map.size
+                    self.YPlatformBelowPlayer = map.listYfrom[i] - self.height - map.size
                     self.actualPlatform = i
                     self.onPlatform = True
                     return True
         return False
+
 
     def find_coordinates(self, map, bullets, winWidth):
 
@@ -74,7 +68,7 @@ class Player:
             self.timer -= 1
 
         if keys[self.leftButton] and self.x > 0:
-            self.x -= self.vel
+            self.x -= self.velocity
             self.left = True
             self.right = False
 
@@ -85,12 +79,11 @@ class Player:
 
             if keys[self.shotButton] and self.timer == 0:
                 self.timer = 10
-                # zrobić tak zeby bullet miał swojego playera który go rzucił
                 bullet = Bullet(self.x + self.width / 2, self.y, "left", self)
                 bullets.append(bullet)
         # zastanowić się żeby nie przyjmowac w metodzie winWidth
         elif keys[self.rightButton] and self.x < winWidth - self.width:
-            self.x += self.vel
+            self.x += self.velocity
             self.left = False
             self.right = True
 
@@ -131,7 +124,7 @@ class Player:
                 shift = int((self.jumpCount * abs(self.jumpCount)) * 0.75)
                 self.y -= shift
                 if self.jumpCount <= 0 and self.belowIsPlatform(abs(shift), map):
-                    self.y = self.platformBelowY
+                    self.y = self.YPlatformBelowPlayer
                     self.jumpCount = 8
                     self.isJump = False
 
@@ -141,6 +134,6 @@ class Player:
                 shift = int((self.jumpCount * abs(self.jumpCount)) * 0.75)
                 self.y -= shift
                 if self.jumpCount <= 0 and self.belowIsPlatform(abs(shift), map):
-                    self.y = self.platformBelowY
+                    self.y = self.YPlatformBelowPlayer
                     self.jumpCount = 8
                     self.isJump = False

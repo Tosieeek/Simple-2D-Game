@@ -3,16 +3,16 @@ class Bullet:
         self.x = x
         self.y = y + 25
         self.site = site
-        self.vec = 9
+        self.velocity = 9
         self.state = True
         self.size = 24
         self.owner = owner
 
     def move(self):
         if self.site == "left":
-            self.x -= self.vec
+            self.x -= self.velocity
         elif self.site =="right":
-            self.x += self.vec
+            self.x += self.velocity
 
     def hitbox_check(self, players):
         for player in players:

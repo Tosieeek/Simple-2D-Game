@@ -1,6 +1,6 @@
 class Map:
-    def __init__(self, df, size, color, winWidth, winHeight):
-        self.size = size
+    def __init__(self, df, platformHeight, color, winWidth, winHeight):
+        self.size = platformHeight
         self.color = color
         self.listXfrom = []
         self.listXto = []

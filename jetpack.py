@@ -9,20 +9,20 @@ class Jetpack:
         self.startedY = map.listYfrom[self.platform] - self.height - map.size
         self.y = self.startedY
         self.direction = "up"
-        self.shift = 12
+        self.movingTimer = 12
 
     def surge(self):
-        if self.direction == "up" and self.shift > 0:
+        if self.direction == "up" and self.movingTimer > 0:
             self.y -= 1
-            self.shift -= 1
-        elif self.direction == "down" and self.shift > 0:
+            self.movingTimer -= 1
+        elif self.direction == "down" and self.movingTimer > 0:
             self.y += 1
-            self.shift -= 1
+            self.movingTimer -= 1
         else:
             if self.direction == "up":
                 self.direction = "down"
-                self.shift = 10
+                self.movingTimer = 10
             elif self.direction == "down":
                 self.direction = "up"
-                self.shift = 10
+                self.movingTimer = 10
 

@@ -3,7 +3,7 @@ class Bullet:
         self.x = x
         self.y = y + 25
         self.site = site
-        self.vec = 10
+        self.vec = 9
         self.state = True
         self.size = 24
         self.owner = owner

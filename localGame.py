@@ -54,7 +54,7 @@ def redrawGameWindow(win, winWidth, attributes):
     #     pygame.draw.circle(win, map.color,(700,100),30,5)
 
     if len(bullets) != 0:
-
+        bulletsToRemove = []
         for b in bullets:
             b.move()
             if b.hitbox_check(players):
@@ -71,9 +71,10 @@ def redrawGameWindow(win, winWidth, attributes):
                     b.state = True
 
             if b.x < 0 or b.x > winWidth:
-                bullets.remove(b)
+                bulletsToRemove.append(b)
                 del b
-
+        for b in bulletsToRemove:
+            bullets.remove(b)
 
     for player in players:
         player.walkCount_check()
@@ -115,7 +116,7 @@ def game(win,winWidth,winHeight):
     run = True
     while run:
 
-        clock.tick(21)
+        clock.tick(24)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

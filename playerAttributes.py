@@ -49,3 +49,8 @@ class PlayerAttributes:
                     else:
                         win.blit(self.heart, (winWidth - (self.playerIconWidth + 2 * self.padding + self.player.lives * self.heartWidth), self.padding))
 
+                    if self.player.hasJetpack:
+                        win.blit(self.jetpackGraphic, (winWidth-(self.jetpackWidth+self.padding), 2 * self.padding + self.playerIconHeight))
+                        # tutaj trzeba uważać bo opieramy się na zmiennych playera przy używaniu grafiki jetpacka :(
+                        win.blit(pygame.transform.scale(self.jetpackBar, (int(4*self.player.width-(self.player.jetpackTimer/90 * 4*self.player.width)), int(self.playerIconHeight/2))),( winWidth - self.jetpackWidth - self.padding -int(4*self.player.width-(self.player.jetpackTimer/90 * 4*self.player.width)), 2 * self.padding + self.playerIconHeight+int(self.playerIconHeight/4)))
+

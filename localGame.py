@@ -56,7 +56,8 @@ players = []
 ticker = 0
 jetpackTimer = 0
 jetpacks = []
-frequency = 21
+frequency = 24
+
 
 
 def redrawGameWindow(win, winWidth, attributes, map):
@@ -210,5 +211,6 @@ def game(win, winWidth, winHeight):
 
             if player.lives == 0:
                 run = False
+
 
         redrawGameWindow(win, winWidth, attributes, map)

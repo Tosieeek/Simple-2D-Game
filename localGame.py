@@ -204,13 +204,23 @@ def game(win, winWidth, winHeight):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+
                 run = False
         for player in players:
 
             player.find_coordinates(map, bullets, winWidth)
 
             if player.lives == 0:
+
                 run = False
 
-
         redrawGameWindow(win, winWidth, attributes, map)
+    clearAll()
+def clearAll():
+    global ticker, jetpackTimer
+    players.clear()
+    jetpacks.clear()
+    bullets.clear()
+
+    ticker = 0
+    jetpackTimer = 0

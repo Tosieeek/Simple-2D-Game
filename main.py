@@ -15,12 +15,17 @@ game = True
 while game:
     win.blit(background, (0, 0))
     button1 = win.blit(lGame, (int((winWidth - 222)/2), 280))
+    button2 = win.blit(lGame, (int((winWidth - 222) / 2), 380))
     mx, my = pygame.mouse.get_pos()
 
 
     if button1.collidepoint((mx, my)):
         if click:
             localGame.game(win, winWidth, winHeight)
+
+    elif button2.collidepoint((mx, my)):
+        if click:
+            localGame.server_game(win, winWidth, winHeight)
 
 
     click = False

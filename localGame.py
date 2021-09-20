@@ -4,6 +4,7 @@ from map import Map
 from player import Player
 from playerAttributes import PlayerAttributes
 from jetpack import Jetpack
+from network import Network
 
 walkRight = [pygame.image.load('grafikaDoGry/wr0.png'), pygame.image.load('grafikaDoGry/wr1.png'),
              pygame.image.load('grafikaDoGry/wr2.png'),
@@ -71,6 +72,7 @@ def redrawGameWindow(win, winWidth, attributes, map):
     ticker += 1
     ticker %= frequency + 1
     jetpackTimer += 1
+
     #   !!! NIE USUWAĆ, TO DO TESTÓW!!!
 
     # pygame.draw.rect(win,(0,0,0),(x,y,width,height),3)
@@ -197,6 +199,7 @@ def game(win, winWidth, winHeight):
     pa2 = PlayerAttributes(stand, heart, player2, heartLeft, heartRight, jetpackGraphics, jetpackBar)
     attributes = pa1, pa2
 
+
     run = True
     while run:
 
@@ -216,6 +219,43 @@ def game(win, winWidth, winHeight):
 
         redrawGameWindow(win, winWidth, attributes, map)
     clearAll()
+
+
+
+def server_game(win, winWidth, winHeight):
+    map = Map(mapSource, 4, (220, 47, 10), winWidth, winHeight)
+    player1 = Player(winWidth, startY, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_o,
+                     pygame.K_p)
+    players.append(player1)
+    pa1 = PlayerAttributes(stand, heart, player1, heartLeft, heartRight, jetpackGraphics, jetpackBar)
+
+    n = Network()
+
+    player2 = n.send(player1)
+    players.append(player2)
+    pa2 = PlayerAttributes(stand, heart, player2, heartLeft, heartRight, jetpackGraphics, jetpackBar)
+    attributes = pa1, pa2
+
+    run = True
+    while run:
+
+        clock.tick(frequency)
+
+        player2 = n.send(player1)
+        players[1] = player2
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+
+                run = False
+
+
+        player1.find_coordinates(map, bullets, winWidth)
+
+
+        redrawGameWindow(win, winWidth, attributes, map)
+    clearAll()
+
 def clearAll():
     global ticker, jetpackTimer
     players.clear()

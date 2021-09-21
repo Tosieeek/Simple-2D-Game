@@ -238,8 +238,10 @@ def server_game(win, winWidth, winHeight):
     messReceived = n.send(messToSend)
 
     players.append(messReceived.player)
-    pa2 = PlayerAttributes(stand, heart, messReceived.player, heartLeft, heartRight, jetpackGraphics, jetpackBar)
-    attributes = pa1, pa2
+    print(player1.x)
+    print(messReceived.player.x)
+    pa2 = PlayerAttributes(stand, heart, players[1], heartLeft, heartRight, jetpackGraphics, jetpackBar)
+    attributes = [pa1, pa2]
 
     run = True
     while run:
@@ -256,17 +258,16 @@ def server_game(win, winWidth, winHeight):
 
         newBullet[0] = 0
         players[1] = messReceived.player
+        attributes[1].player = players[1]
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
 
                 run = False
 
-        for player in players:
-            print("\n", player.lives, "\n", player.hit, "\n", player.gotShoot, "\n")
+        #print("\n", attributes[1].player.lives, "\n", attributes[1].player.hit, "\n", attributes[1].player.gotShoot, "\n")
 
         player1.find_coordinates(map, bullets, winWidth, newBullet)
-
 
         redrawGameWindow(win, winWidth, attributes, map, True)
     clearAll()

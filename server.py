@@ -7,12 +7,14 @@ import time
 from map import Map
 
 mapSource = 'grafikaDoGry/map2.txt'
-server = "192.168.8.126"
+server = "192.168.1.56"
 port = 5555
 winWidth = 800
 winHeight = 600
 map = Map(mapSource, 4, (220, 47, 10), winWidth, winHeight)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+newJetpack = 0
+jetTable = []
 
 try:
     s.bind((server, port))
@@ -67,10 +69,12 @@ def threaded_client(conn, player):
                 else:
                     messToSend = messages[1]
 
-                print("Received", messToSend)
-                print("Sending", messReceived)
+                #print("Received", messToSend)
+                #print("Sending", messReceived)
 
-
+            if jetTable[player] is True:
+                jetTable[player] = False
+                messToSend.jetpack = newJetpack
             conn.sendall(pickle.dumps(messToSend))
 
         except error:
@@ -88,15 +92,17 @@ def countdown(time_sec):
 
 
 def jetpack_timer(time_sec):
+    global newJetpack, jetTable
     while True:
         countdown(time_sec)
         jetpack = Jetpack(map)
-        if len(messages) > 0:
-            messages[0].jetpack= jetpack
-            messages[1].jetpack = jetpack
+        #if len(messages) > 0:
+        #    messages[0].jetpack = jetpack
+        #    messages[1].jetpack = jetpack
+        newJetpack = jetpack
+        jetTable = [True, True]
+
         print("jeb jetpackiem he he")
-
-
 
 start_new_thread(jetpack_timer, (5,))
 

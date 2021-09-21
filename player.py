@@ -66,7 +66,7 @@ class Player:
         return False
 
 
-    def find_coordinates(self, map, bullets, winWidth):
+    def find_coordinates(self, map, bullets, winWidth, newBullet):
 
         keys = pygame.key.get_pressed()
 
@@ -87,6 +87,7 @@ class Player:
                 self.timer = 10
                 bullet = Bullet(self.x + self.width / 2, self.y, "left", self)
                 bullets.append(bullet)
+                newBullet[0] = bullet
 
         # zastanowić się żeby nie przyjmowac w metodzie winWidth
         elif keys[self.rightButton] and self.x < winWidth - self.width:
@@ -103,6 +104,7 @@ class Player:
                 self.timer = 10
                 bullet = Bullet(self.x + self.width / 2, self.y, "right", self)
                 bullets.append(bullet)
+                newBullet[0] = bullet
 
         else:
             self.left = False

@@ -5,6 +5,7 @@ from player import Player
 from playerAttributes import PlayerAttributes
 from jetpack import Jetpack
 from network import Network
+from message import Message
 
 walkRight = [pygame.image.load('grafikaDoGry/wr0.png'), pygame.image.load('grafikaDoGry/wr1.png'),
              pygame.image.load('grafikaDoGry/wr2.png'),
@@ -59,9 +60,11 @@ jetpackTimer = 0
 jetpacks = []
 frequency = 24
 
+newBullet = [0]
 
 
-def redrawGameWindow(win, winWidth, attributes, map):
+
+def redrawGameWindow(win, winWidth, attributes, map, server):
     global ticker, hitTicker, jetpackTimer
 
     win.blit(background, (0, 0))
@@ -109,7 +112,7 @@ def redrawGameWindow(win, winWidth, attributes, map):
         for bullet in bulletsToRemove:
             bullets.remove(bullet)
 
-    if jetpackTimer % 100 == 0:
+    if jetpackTimer % 100 == 0 and server is False:
         jet = Jetpack(map)
         jetpacks.append(jet)
         jetpackTimer = 0
@@ -211,13 +214,13 @@ def game(win, winWidth, winHeight):
                 run = False
         for player in players:
 
-            player.find_coordinates(map, bullets, winWidth)
+            player.find_coordinates(map, bullets, winWidth, newBullet)
 
             if player.lives == 0:
 
                 run = False
 
-        redrawGameWindow(win, winWidth, attributes, map)
+        redrawGameWindow(win, winWidth, attributes, map, False)
     clearAll()
 
 
@@ -231,9 +234,11 @@ def server_game(win, winWidth, winHeight):
 
     n = Network()
 
-    player2 = n.send(player1)
-    players.append(player2)
-    pa2 = PlayerAttributes(stand, heart, player2, heartLeft, heartRight, jetpackGraphics, jetpackBar)
+    messToSend = Message(player1, 0, 0)
+    messReceived = n.send(messToSend)
+
+    players.append(messReceived.player)
+    pa2 = PlayerAttributes(stand, heart, messReceived.player, heartLeft, heartRight, jetpackGraphics, jetpackBar)
     attributes = pa1, pa2
 
     run = True
@@ -241,19 +246,29 @@ def server_game(win, winWidth, winHeight):
 
         clock.tick(frequency)
 
-        player2 = n.send(player1)
-        players[1] = player2
+        messToSend = Message(player1, newBullet[0], 0)
+        messReceived = n.send(messToSend)
+
+        if messReceived.bullet != 0:
+            bullets.append(messReceived.bullet)
+        if messReceived.jetpack != 0:
+            jetpacks.append(messReceived.jetpack)
+
+        newBullet[0] = 0
+        players[1] = messReceived.player
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
 
                 run = False
 
+        for player in players:
+            print("\n", player.lives, "\n", player.hit, "\n", player.gotShoot, "\n")
 
-        player1.find_coordinates(map, bullets, winWidth)
+        player1.find_coordinates(map, bullets, winWidth, newBullet)
 
 
-        redrawGameWindow(win, winWidth, attributes, map)
+        redrawGameWindow(win, winWidth, attributes, map, True)
     clearAll()
 
 def clearAll():

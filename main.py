@@ -8,6 +8,7 @@ win = pygame.display.set_mode((winWidth, winHeight))
 pygame.display.set_caption("First Game")
 background = pygame.image.load('grafikaDoGry/menu/menuBackground.png')
 lGame = pygame.image.load('grafikaDoGry/menu/localGameButton.png')
+oGame = pygame.image.load('grafikaDoGry/menu/onlineGameButton.png')
 mainClock = pygame.time.Clock()
 
 click = False
@@ -15,7 +16,7 @@ game = True
 while game:
     win.blit(background, (0, 0))
     button1 = win.blit(lGame, (int((winWidth - 222)/2), 280))
-    button2 = win.blit(lGame, (int((winWidth - 222) / 2), 380))
+    button2 = win.blit(oGame, (int((winWidth - 222) / 2), 380))
     mx, my = pygame.mouse.get_pos()
 
 
